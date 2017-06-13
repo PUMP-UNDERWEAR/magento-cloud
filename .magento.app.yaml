@@ -17,6 +17,7 @@ runtime:
         - redis
         - xsl
         - json
+        - blackfire
 
 # The relationships of the application with services or other applications.
 # The left-hand side is the name of the relationship as it will be exposed
@@ -24,7 +25,6 @@ runtime:
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
     database: "mysql:mysql"
-    solr: "solr:solr"
     redis: "redis:redis"
 
 # The configuration of app when it is exposed to the web.
@@ -55,10 +55,13 @@ web:
             allow: true
             scripts: false
             passthru: "/front-static.php"
+            rules:
+                ^/static/version\d+/(?<resource>.*)$:
+                    passthru: "/static/$resource"
 
 
 # The size of the persistent disk of the application (in MB).
-disk: 2048
+disk: 2048 
 
 # The mounts that will be performed when the package is deployed.
 mounts:
